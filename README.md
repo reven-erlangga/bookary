@@ -10,7 +10,7 @@
 
 ## 📎 About
 
-Sistem informasi perpustakaan!
+Sistem informasi perpustakaan
 
 ## Live Preview
 
