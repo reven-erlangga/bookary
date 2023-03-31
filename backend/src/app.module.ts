@@ -8,7 +8,6 @@ import { ConfigModule } from '@nestjs/config';
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    UsersModule,
     TypeOrmModule.forRoot({
       type: process.env.DB_TYPE as any,
       host: process.env.PG_HOST,
@@ -16,9 +15,11 @@ import { ConfigModule } from '@nestjs/config';
       username: process.env.PG_USERNAME,
       password: process.env.PG_PASSWORD,
       database: process.env.PG_DB,
-      entities: [__dirname + '/**/*.entity{.ts, .js}'],
+      entities: [__dirname + '/**/*.entity.{js,ts}'],
+      autoLoadEntities: true,
       synchronize: true,
     }),
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
