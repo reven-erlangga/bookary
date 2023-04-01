@@ -1,4 +1,8 @@
-FROM node:18
+###################
+# BUILD FOR PRODUCTION
+###################
+
+FROM node:18 As build
 
 # Create app directory
 WORKDIR /usr/src/app

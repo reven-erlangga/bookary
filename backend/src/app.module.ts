@@ -4,6 +4,9 @@ import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm/dist';
 import { ConfigModule } from '@nestjs/config';
+import { GoogleController } from './auth/google/google.controller';
+import { GoogleService } from './auth/google/google.service';
+import { GoogleModule } from './auth/google/google.module';
 
 @Module({
   imports: [
@@ -20,8 +23,7 @@ import { ConfigModule } from '@nestjs/config';
       synchronize: true,
     }),
     UsersModule,
+    GoogleModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}
