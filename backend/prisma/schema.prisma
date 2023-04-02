@@ -11,14 +11,14 @@ datasource db {
 }
 
 model Gender {
-  id  String @id @default(uuid())
-  code String
-  name String
+  id          String   @id @default(uuid())
+  code        String
+  name        String
   description String?
-  user User[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
-  
+  user        User[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+
   @@map("genders")
 }
 
@@ -30,45 +30,45 @@ enum Role {
 }
 
 model User {
-  id  String @id @default(uuid())
-  email String? @unique
-  password String?
-  firstName String
-  middleName String?
-  lastName String
+  id          String       @id @default(uuid())
+  email       String?      @unique
+  password    String?
+  firstName   String
+  middleName  String?
+  lastName    String
   dateOfBirth DateTime?
   phoneNumber String?
-  picture String?
-  genderId  String?
-  role Role @default(MEMBER)
-  gender Gender? @relation(fields: [genderId], references: [id])
+  picture     String?
+  genderId    String?
+  role        Role         @default(MEMBER)
+  gender      Gender?      @relation(fields: [genderId], references: [id])
   oAuthTokens OAuthToken[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @default(now())
 
   @@map("users")
 }
 
 model Member {
-  id  String @id @default(uuid())
+  id             String   @id @default(uuid())
   identityNumber String
-  memberNumber String
-  address String?
-  hobby String?
-  topicTag String? 
-  biodata String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
+  memberNumber   String
+  address        String?
+  hobby          String?
+  topicTag       String?
+  biodata        String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @default(now())
 
   @@map("members")
 }
 
 model Librarian {
-  id  String @id @default(uuid())
+  id             String   @id @default(uuid())
   identityNumber String
-  address String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
+  address        String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @default(now())
 
   @@map("librarians")
 }
@@ -80,14 +80,61 @@ enum AccountType {
 }
 
 model OAuthToken {
-  id  String @id @default(uuid())
-  accessToken String
+  id           String      @id @default(uuid())
+  accessToken  String
   refreshToken String
-  accountType AccountType @default(EMAIL)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
-  user    User?    @relation(fields: [userId], references: [id])
-  userId  String?
-  
+  accountType  AccountType @default(EMAIL)
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @default(now())
+  user         User?       @relation(fields: [userId], references: [id])
+  userId       String?
+
   @@map("o_auth_tokens")
+}
+
+model Book {
+  id          String   @id @default(uuid())
+  code        String
+  title       String
+  isbn        String
+  year        Int
+  description String
+  imagePath   String
+  author      String
+  stock       Int
+  categoryId  String   @unique
+  publisherId String   @unique
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+
+  category  BookCategory  @relation(fields: [categoryId], references: [id])
+  publisher BookPublisher @relation(fields: [publisherId], references: [id])
+
+  @@map("books")
+}
+
+model BookCategory {
+  id          String   @id @default(uuid())
+  code        String
+  name        String
+  description String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+
+  book Book?
+
+  @@map("book_categories")
+}
+
+model BookPublisher {
+  id          String   @id @default(uuid())
+  code        String
+  name        String
+  description String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+
+  book Book?
+
+  @@map("book_publishers")
 }
