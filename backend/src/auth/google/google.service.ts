@@ -1,27 +1,42 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { User } from 'src/users/entities/user.entity';
-import { Repository } from 'typeorm';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class GoogleService {
-  constructor(
-    @InjectRepository(User) private usersRepository: Repository<User>,
-  ) {}
+  constructor(private prismaService: PrismaService) {}
 
-  async googleLogin(req) {
+  async login(req) {
     if (!req.user) {
       return 'No user from google';
     }
 
     const user = req.user;
-    const newUser = await this.usersRepository.create({
-      firstName: user['firstName'],
-      lastName: user['lastName'],
-      picture: user['picture'],
+    const searchUser = await await this.prismaService.user.findFirst({
+      where: {
+        email: user['email'],
+      },
     });
 
-    await this.usersRepository.save(newUser);
+    /**
+     * Check user exist
+     *
+     * Check user exist by email and update profile if exist
+     */
+    if (searchUser) {
+    }
+
+    /**
+     * Create a new user
+     *
+     * Create a new user if user not exist
+     */
+    const newUser = await this.prismaService.user.create({
+      data: {
+        firstName: user['firstName'],
+        lastName: user['lastName'],
+        picture: user['picture'],
+      },
+    });
 
     return newUser;
   }

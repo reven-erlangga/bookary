@@ -1,4 +1,11 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { OAuthClientToken } from 'src/oauth_client_tokens/entities/oauth_client_token.entity';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  JoinColumn,
+  OneToMany,
+} from 'typeorm';
 
 export enum Role {
   MEMBER = 'member',
@@ -12,8 +19,23 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Column({
+    nullable: true,
+  })
+  email: string;
+
+  @Column({
+    nullable: true,
+  })
+  password: string;
+
   @Column()
   firstName: string;
+
+  @Column({
+    nullable: true,
+  })
+  middleName: string;
 
   @Column({
     nullable: true,
@@ -56,4 +78,8 @@ export class User {
     default: () => 'CURRENT_TIMESTAMP',
   })
   updatedAt: Date;
+
+  @OneToMany(() => OAuthClientToken, (oauth) => oauth.id, { nullable: true })
+  @JoinColumn()
+  OAuthClientToken: OAuthClientToken[];
 }

@@ -1,0 +1,93 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Gender {
+  id  String @id @default(uuid())
+  code String
+  name String
+  description String?
+  user User[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  
+  @@map("genders")
+}
+
+enum Role {
+  MEMBER
+  LIBRARIAN
+  ADMIN
+  SUPER_ADMIN
+}
+
+model User {
+  id  String @id @default(uuid())
+  email String? @unique
+  password String?
+  firstName String
+  middleName String?
+  lastName String
+  dateOfBirth DateTime?
+  phoneNumber String?
+  picture String?
+  genderId  String?
+  role Role @default(MEMBER)
+  gender Gender? @relation(fields: [genderId], references: [id])
+  oAuthTokens OAuthToken[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  @@map("users")
+}
+
+model Member {
+  id  String @id @default(uuid())
+  identityNumber String
+  memberNumber String
+  address String?
+  hobby String?
+  topicTag String? 
+  biodata String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  @@map("members")
+}
+
+model Librarian {
+  id  String @id @default(uuid())
+  identityNumber String
+  address String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  @@map("librarians")
+}
+
+enum AccountType {
+  EMAIL
+  GOOGLE
+  FACEBOOK
+}
+
+model OAuthToken {
+  id  String @id @default(uuid())
+  accessToken String
+  refreshToken String
+  accountType AccountType @default(EMAIL)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  user    User?    @relation(fields: [userId], references: [id])
+  userId  String?
+  
+  @@map("o_auth_tokens")
+}
