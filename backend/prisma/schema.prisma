@@ -107,8 +107,8 @@ model Book {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @default(now())
 
-  category  BookCategory  @relation(fields: [categoryId], references: [id])
-  publisher BookPublisher @relation(fields: [publisherId], references: [id])
+  category  BookCategory?  @relation(fields: [categoryId], references: [id])
+  publisher BookPublisher? @relation(fields: [publisherId], references: [id])
 
   @@map("books")
 }
