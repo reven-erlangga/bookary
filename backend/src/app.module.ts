@@ -10,6 +10,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MemberModule } from './member/member.module';
 import { BookModule } from './book/book.module';
+import { BookCategoryModule } from './book_category/book_category.module';
+import { GenerateModule } from 'utils/generate/generate.module';
 
 @Module({
   imports: [
@@ -28,11 +30,13 @@ import { BookModule } from './book/book.module';
       synchronize: true,
     }),
     PrismaModule,
+    GenerateModule,
     UsersModule,
     GoogleModule,
     FacebookModule,
     MemberModule,
     BookModule,
+    BookCategoryModule,
     // OauthClientTokensModule,
   ],
   controllers: [AppController],
