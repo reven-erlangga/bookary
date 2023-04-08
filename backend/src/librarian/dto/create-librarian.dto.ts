@@ -1,5 +1,5 @@
 import { Prisma } from '@prisma/client';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class CreateLibrarianDto implements Prisma.LibrarianCreateInput {
   @IsString()
@@ -7,6 +7,10 @@ export class CreateLibrarianDto implements Prisma.LibrarianCreateInput {
     message: 'Please insert librarian identity number',
   })
   public identityNumber: string;
+
+  @IsString()
+  @IsOptional()
+  public memberNumber: string;
 
   @IsString()
   @IsNotEmpty({
