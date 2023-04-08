@@ -35,4 +35,8 @@ export class LibrarianService {
       },
     });
   }
+
+  remove(id: string) {
+    return this.prismaService.librarian.delete({ where: { id } });
+  }
 }

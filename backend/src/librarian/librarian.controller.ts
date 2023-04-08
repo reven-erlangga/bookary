@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Patch,
@@ -63,5 +64,16 @@ export class LibrarianController {
     @Body() updateLibrarianDto: UpdateLibrarianDto,
   ) {
     return this.librarianService.update(id, updateLibrarianDto);
+  }
+
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    const librarian = this.librarianService.remove(id);
+
+    if (!librarian) {
+      throw new Error('Librarian not found');
+    }
+
+    return this.librarianService.remove(id);
   }
 }
