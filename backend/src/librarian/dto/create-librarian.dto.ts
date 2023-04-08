@@ -10,7 +10,7 @@ export class CreateLibrarianDto implements Prisma.LibrarianCreateInput {
 
   @IsString()
   @IsOptional()
-  public memberNumber: string;
+  public librarianNumber: string;
 
   @IsString()
   @IsNotEmpty({
