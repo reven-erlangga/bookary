@@ -73,16 +73,18 @@ model Member {
 enum LibrarianStatus {
   ACTIVE
   DEACTIVE
+  
+	@@map("LibrarianStatus")
 }
 
 model Librarian {
-  id             String          @id @default(uuid())
-  identityNumber String
+  id              String          @id @default(uuid())
+  identityNumber  String
   librarianNumber String
-  address        String?
-  status         LibrarianStatus @default(ACTIVE)
-  createdAt      DateTime        @default(now())
-  updatedAt      DateTime        @default(now())
+  address         String?
+  status          LibrarianStatus @default(ACTIVE)
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @default(now())
 
   @@map("librarians")
 }
