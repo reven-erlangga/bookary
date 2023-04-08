@@ -6,12 +6,9 @@ import {
   Patch,
   Param,
   Delete,
-  Req,
   Query,
   UsePipes,
   ValidationPipe,
-  Res,
-  HttpStatus,
 } from '@nestjs/common';
 import { BookCategoryService } from './book_category.service';
 import { CreateBookCategoryDto } from './dto/create-book_category.dto';
@@ -28,10 +25,7 @@ export class BookCategoryController {
 
   @Post()
   @UsePipes(new ValidationPipe({ transform: true }))
-  create(
-    @Body() createBookCategoryDto: CreateBookCategoryDto,
-    @Res() res: Response,
-  ) {
+  create(@Body() createBookCategoryDto: CreateBookCategoryDto) {
     const code = 'BC-'.concat(this.autoNumberService.autoNumber(10, 1000));
     createBookCategoryDto.code = code;
 

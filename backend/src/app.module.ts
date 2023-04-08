@@ -12,6 +12,7 @@ import { MemberModule } from './member/member.module';
 import { BookModule } from './book/book.module';
 import { BookCategoryModule } from './book_category/book_category.module';
 import { GenerateModule } from 'utils/generate/generate.module';
+import { MulterModule } from '@nestjs/platform-express';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { GenerateModule } from 'utils/generate/generate.module';
       autoLoadEntities: true,
       synchronize: true,
     }),
+    MulterModule.register({ dest: './uploads' }),
     PrismaModule,
     GenerateModule,
     UsersModule,

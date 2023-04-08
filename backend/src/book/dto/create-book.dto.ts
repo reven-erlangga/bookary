@@ -1,11 +1,20 @@
 import { Prisma } from '@prisma/client';
-import { IsInt, IsNotEmpty, IsString } from 'class-validator';
+import { Transform } from 'class-transformer';
+import {
+  IsInt,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+  ValidateIf,
+} from 'class-validator';
 
 export class CreateBookDto implements Prisma.BookCreateInput {
   @IsString()
   @IsNotEmpty({
     message: 'Please insert your code of book!',
   })
+  @ValidateIf((o) => o.code)
   public code: string;
 
   @IsString()
@@ -20,7 +29,8 @@ export class CreateBookDto implements Prisma.BookCreateInput {
   })
   public isbn: string;
 
-  @IsInt()
+  @IsNumber()
+  @Transform(({ value }) => parseInt(value))
   @IsNotEmpty({
     message: 'Please insert your year of book!',
   })
@@ -33,9 +43,7 @@ export class CreateBookDto implements Prisma.BookCreateInput {
   public description: string;
 
   @IsString()
-  @IsNotEmpty({
-    message: 'Please insert your title of book!',
-  })
+  @IsOptional()
   public imagePath: string;
 
   @IsString()
@@ -44,19 +52,12 @@ export class CreateBookDto implements Prisma.BookCreateInput {
   })
   public author: string;
 
-  @IsInt()
+  @IsNumber()
+  @Transform(({ value }) => parseInt(value))
   @IsNotEmpty({
     message: 'Please insert your title of book!',
   })
   public stock: number;
 
-  @IsNotEmpty({
-    message: 'Please insert your category book!',
-  })
   public category: any;
-
-  @IsNotEmpty({
-    message: 'Please insert your publisher book!',
-  })
-  public publisher: any;
 }

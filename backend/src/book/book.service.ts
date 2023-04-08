@@ -12,8 +12,14 @@ export class BookService {
     return await this.prismaService.book.create({ data: createBookDto });
   }
 
-  async findAll(): Promise<Book[]> {
-    return await this.prismaService.book.findMany();
+  async findAll(page: number, take: number): Promise<Book[]> {
+    return await this.prismaService.book.findMany({
+      skip: page,
+      take,
+      include: {
+        category: true,
+      },
+    });
   }
 
   async findOne(id: string): Promise<Book> {
