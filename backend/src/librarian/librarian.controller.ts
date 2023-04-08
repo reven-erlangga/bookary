@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { LibrarianService } from './librarian.service';
 import AutoNumberService from 'utils/generate/generate.service';
 import { CreateLibrarianDto } from './dto/create-librarian.dto';
@@ -35,5 +35,16 @@ export class LibrarianController {
     }
 
     return this.librarianService.findAll(skip, take);
+  }
+
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    const librarian = this.librarianService.findOne(id);
+
+    if (!librarian) {
+      throw new Error('Librarian not found');
+    }
+
+    return librarian;
   }
 }

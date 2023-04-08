@@ -17,4 +17,12 @@ export class LibrarianService {
       take,
     });
   }
+
+  findOne(id: string) {
+    return this.prismaService.librarian.findFirst({
+      where: {
+        id,
+      },
+    });
+  }
 }
