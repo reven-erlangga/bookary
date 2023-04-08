@@ -1,7 +1,11 @@
-import { Controller } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 import { LibrarianService } from './librarian.service';
+import AutoNumberService from 'utils/generate/generate.service';
 
-@Controller('librarian')
+@Controller('librarians')
 export class LibrarianController {
-  constructor(private readonly librarianService: LibrarianService) {}
+  constructor(
+    private readonly librarianService: LibrarianService,
+    private readonly autoNumberService: AutoNumberService,
+  ) {}
 }
