@@ -49,26 +49,39 @@ model User {
   @@map("users")
 }
 
+enum MemberStatus {
+  ACTIVE
+  DEACTIVE
+  BANNED
+}
+
 model Member {
-  id             String   @id @default(uuid())
+  id             String       @id @default(uuid())
   identityNumber String
   memberNumber   String
   address        String?
   hobby          String?
   topicTag       String?
   biodata        String?
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @default(now())
+  status         MemberStatus @default(ACTIVE)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @default(now())
 
   @@map("members")
 }
 
+enum LibrarianStatus {
+  ACTIVE
+  DEACTIVE
+}
+
 model Librarian {
-  id             String   @id @default(uuid())
+  id             String          @id @default(uuid())
   identityNumber String
   address        String?
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @default(now())
+  status         LibrarianStatus @default(ACTIVE)
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @default(now())
 
   @@map("librarians")
 }
@@ -93,7 +106,7 @@ model OAuthToken {
 }
 
 model Book {
-  id          String   @id @default(uuid())
+  id          String    @id @default(uuid())
   code        String
   title       String
   isbn        String
@@ -102,13 +115,14 @@ model Book {
   imagePath   String
   author      String
   stock       Int
-  categoryId  String   @unique
-  publisherId String   @unique
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @default(now())
+  categoryId  String    @unique
+  publisherId String    @unique
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @default(now())
+  deletedAt   DateTime?
 
-  category  BookCategory?  @relation(fields: [categoryId], references: [id])
-  publisher BookPublisher? @relation(fields: [publisherId], references: [id])
+  category  BookCategory? @relation(fields: [categoryId], references: [id])
+  publisher Publisher?    @relation(fields: [publisherId], references: [id])
 
   @@map("books")
 }
@@ -118,24 +132,25 @@ model BookCategory {
   code        String
   name        String
   description String
-  deletedAt   DateTime?
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime?
 
   book Book?
 
   @@map("book_categories")
 }
 
-model BookPublisher {
-  id          String   @id @default(uuid())
+model Publisher {
+  id          String    @id @default(uuid())
   code        String
   name        String
-  description String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @default(now())
+  description String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt()
+  deletedAt   DateTime?
 
   book Book?
 
-  @@map("book_publishers")
+  @@map("publishers")
 }

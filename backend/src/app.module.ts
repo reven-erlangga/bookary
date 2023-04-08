@@ -13,6 +13,7 @@ import { BookModule } from './book/book.module';
 import { BookCategoryModule } from './book_category/book_category.module';
 import { GenerateModule } from 'utils/generate/generate.module';
 import { MulterModule } from '@nestjs/platform-express';
+import { PublisherModule } from './publisher/publisher.module';
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { MulterModule } from '@nestjs/platform-express';
     MemberModule,
     BookModule,
     BookCategoryModule,
+    PublisherModule,
     // OauthClientTokensModule,
   ],
   controllers: [AppController],
