@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateLibrarianDto } from './dto/create-librarian.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Librarian } from '@prisma/client';
+import { UpdateLibrarianDto } from './dto/update-librarian.dto';
 
 @Injectable()
 export class LibrarianService {
@@ -20,6 +21,15 @@ export class LibrarianService {
 
   findOne(id: string) {
     return this.prismaService.librarian.findFirst({
+      where: {
+        id,
+      },
+    });
+  }
+
+  update(id: string, updateLibrarianDto: UpdateLibrarianDto) {
+    return this.prismaService.librarian.update({
+      data: updateLibrarianDto,
       where: {
         id,
       },

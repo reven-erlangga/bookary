@@ -1,8 +1,17 @@
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { LibrarianService } from './librarian.service';
 import AutoNumberService from 'utils/generate/generate.service';
 import { CreateLibrarianDto } from './dto/create-librarian.dto';
 import { FindAllLibrarianDto } from './dto/find-all-librarian.dto';
+import { UpdateLibrarianDto } from './dto/update-librarian.dto';
 
 @Controller('librarians')
 export class LibrarianController {
@@ -46,5 +55,13 @@ export class LibrarianController {
     }
 
     return librarian;
+  }
+
+  @Patch(':id')
+  update(
+    @Param('id') id: string,
+    @Body() updateLibrarianDto: UpdateLibrarianDto,
+  ) {
+    return this.librarianService.update(id, updateLibrarianDto);
   }
 }
