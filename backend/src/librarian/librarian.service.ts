@@ -3,6 +3,7 @@ import { CreateLibrarianDto } from './dto/create-librarian.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Librarian } from '@prisma/client';
 import { UpdateLibrarianDto } from './dto/update-librarian.dto';
+import { GeneratePdfLibrarianDto } from './dto/generate-pdf-librarian.dto';
 
 @Injectable()
 export class LibrarianService {
@@ -38,5 +39,11 @@ export class LibrarianService {
 
   remove(id: string) {
     return this.prismaService.librarian.delete({ where: { id } });
+  }
+
+  generatePdf(generatePdfLibrarianDto: GeneratePdfLibrarianDto) {
+    return this.prismaService.librarian.findMany({
+      where: generatePdfLibrarianDto,
+    });
   }
 }
