@@ -30,21 +30,22 @@ enum Role {
 }
 
 model User {
-  id          String       @id @default(uuid())
-  email       String?      @unique
-  password    String?
-  firstName   String
-  middleName  String?
-  lastName    String
-  dateOfBirth DateTime?
-  phoneNumber String?
-  picture     String?
-  genderId    String?
-  role        Role         @default(MEMBER)
-  gender      Gender?      @relation(fields: [genderId], references: [id])
-  oAuthTokens OAuthToken[]
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @default(now())
+  id             String          @id @default(uuid())
+  email          String?         @unique
+  password       String?
+  firstName      String
+  middleName     String?
+  lastName       String
+  dateOfBirth    DateTime?
+  phoneNumber    String?
+  picture        String?
+  genderId       String?
+  role           Role            @default(MEMBER)
+  gender         Gender?         @relation(fields: [genderId], references: [id])
+  oAuthTokens    OAuthToken[]
+  twoFactorAuths TwoFactorAuth[]
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @default(now())
 
   @@map("users")
 }
@@ -73,8 +74,8 @@ model Member {
 enum LibrarianStatus {
   ACTIVE
   DEACTIVE
-  
-	@@map("LibrarianStatus")
+
+  @@map("LibrarianStatus")
 }
 
 model Librarian {
@@ -106,6 +107,21 @@ model OAuthToken {
   userId       String?
 
   @@map("o_auth_tokens")
+}
+
+enum TwoFactorAuthType {
+  GoogleAuthenticator
+}
+
+model TwoFactorAuth {
+  id        String   @id @default(uuid())
+  userId    String
+  secretKey String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@map("two_factor_auth")
 }
 
 model Book {
