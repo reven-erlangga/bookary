@@ -30,14 +30,14 @@ export class GoogleService {
      *
      * Create a new user if user not exist
      */
-    const newUser = await this.prismaService.user.create({
-      data: {
-        firstName: user['firstName'],
-        lastName: user['lastName'],
-        picture: user['picture'],
-      },
-    });
+    // const newUser = await this.prismaService.user.create({
+    //   data: {
+    //     firstName: user['firstName'],
+    //     lastName: user['lastName'],
+    //     picture: user['picture'],
+    //   },
+    // });
 
-    return newUser;
+    // return newUser;
   }
 }
