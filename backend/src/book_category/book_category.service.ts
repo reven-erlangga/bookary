@@ -19,8 +19,8 @@ export class BookCategoryService {
     });
   }
 
-  findOne(id: string) {
-    return this.prismaService.bookCategory.findFirst({
+  async findOne(id: string): Promise<BookCategory> {
+    return await this.prismaService.bookCategory.findFirst({
       where: { id },
     });
   }
