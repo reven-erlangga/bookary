@@ -12,12 +12,13 @@ datasource db {
 
 model Gender {
   id          String   @id @default(uuid())
-  code        String
-  name        String
+  name        String   @unique()
   description String?
-  user        User[]
+  isActive    Boolean  @default(true)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @default(now())
+
+  user User[]
 
   @@map("genders")
 }
@@ -30,22 +31,27 @@ enum Role {
 }
 
 model User {
-  id             String          @id @default(uuid())
-  email          String?         @unique
-  password       String?
-  firstName      String
-  middleName     String?
-  lastName       String
-  dateOfBirth    DateTime?
-  phoneNumber    String?
-  picture        String?
-  genderId       String?
-  role           Role            @default(MEMBER)
-  gender         Gender?         @relation(fields: [genderId], references: [id])
+  id          String    @id @default(uuid())
+  email       String    @unique
+  password    String?
+  firstName   String
+  middleName  String?
+  lastName    String?
+  dateOfBirth DateTime?
+  phoneNumber String?
+  picture     String?
+  genderId    String?
+  role        Role      @default(MEMBER)
+  isValidate  Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @default(now())
+
   oAuthTokens    OAuthToken[]
   twoFactorAuths TwoFactorAuth[]
-  createdAt      DateTime        @default(now())
-  updatedAt      DateTime        @default(now())
+
+  gender Gender? @relation(fields: [genderId], references: [id])
+
+  member Member?
 
   @@map("users")
 }
@@ -58,7 +64,8 @@ enum MemberStatus {
 
 model Member {
   id             String       @id @default(uuid())
-  identityNumber String
+  userId         String       @unique()
+  identityNumber String       @unique()
   memberNumber   String
   address        String?
   hobby          String?
@@ -68,6 +75,9 @@ model Member {
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @default(now())
 
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
   @@map("members")
 }
 
@@ -114,13 +124,14 @@ enum TwoFactorAuthType {
 }
 
 model TwoFactorAuth {
-  id        String   @id @default(uuid())
+  id        String            @id @default(uuid())
   userId    String
   secretKey String
-  type TwoFactorAuthType
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt()
-  user      User     @relation(fields: [userId], references: [id])
+  type      TwoFactorAuthType
+  enable    Boolean
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt()
+  user      User              @relation(fields: [userId], references: [id])
 
   @@map("two_factor_auth")
 }

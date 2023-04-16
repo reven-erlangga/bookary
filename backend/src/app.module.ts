@@ -15,6 +15,11 @@ import { GenerateModule } from 'utils/generate/generate.module';
 import { MulterModule } from '@nestjs/platform-express';
 import { PublisherModule } from './publisher/publisher.module';
 import { LibrarianModule } from './librarian/librarian.module';
+import { QrcodeService } from './qrcode/qrcode.service';
+import { GoogleAuthModule } from './auth/two_factor_auth/google_auth/google_auth.module';
+import { GenderModule } from './gender/gender.module';
+import { MailModule } from './mail/mail.module';
+import { EmailModule } from './auth/email/email.module';
 
 @Module({
   imports: [
@@ -43,9 +48,13 @@ import { LibrarianModule } from './librarian/librarian.module';
     BookCategoryModule,
     PublisherModule,
     LibrarianModule,
+    GoogleAuthModule,
+    GenderModule,
+    MailModule,
+    EmailModule,
     // OauthClientTokensModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, QrcodeService],
 })
 export class AppModule {}
